@@ -113,7 +113,8 @@ static void Task_NewGameSpeech33(u8 taskId);
 static void CB_ContinueNewGameSpeechPart2();
 static void nullsub_34(struct Sprite *sprite);
 static void ShrinkPlayerSprite(struct Sprite *sprite);
-static u8 CreateAzurillSprite(u8 x, u8 y);
+static u8 CreateMewtwoSprite(u8 x, u8 y);
+static u8 LoadMewSprite(u8 sMewtwo, u8 x, u8 y);
 static void AddBirchSpeechObjects(u8 taskId);
 static void Task_SpriteFadeOut(u8 taskId);
 static void StartSpriteFadeOut(u8 taskId, u8 interval);
@@ -742,9 +743,14 @@ void PrintBadgeCount(void)
 #define tGenderSelection data[6]
 #define tFrameCounter    data[7]
 #define tBirchSpriteId   data[8]
-#define tAzurillSpriteId data[9]
+#define tMewtwoSpriteId data[9]
 #define tBrendanSpriteId data[10]
 #define tMaySpriteId     data[11]
+
+#define MEWTWO_X 0x60
+#define MEWTWO_Y 0x40
+#define MEW_X 0x60
+#define MEW_Y 0x20
 
 static void Task_NewGameSpeech1(u8 taskId)
 {
@@ -837,10 +843,10 @@ static void Task_NewGameSpeech5(u8 taskId)
 
 static void Task_NewGameSpeech6(u8 taskId)
 {
-    u8 spriteId = gTasks[taskId].tAzurillSpriteId;
+    u8 spriteId = gTasks[taskId].tMewtwoSpriteId;
 
-    gSprites[spriteId].pos1.x = 104;
-    gSprites[spriteId].pos1.y = 72;
+    gSprites[spriteId].pos1.x = MEWTWO_X;
+    gSprites[spriteId].pos1.y = MEWTWO_Y;
     gSprites[spriteId].invisible = 0;
     gSprites[spriteId].data[0] = 0;
     CreatePokeballSprite(spriteId, gSprites[spriteId].oam.paletteNum, 0x70, 0x3A, 0, 0, 0x20, 0x0000FFFF);
@@ -863,9 +869,9 @@ static void Task_NewGameSpeech7(u8 taskId)
     if (gTasks[taskId].tFrameCounter < 16384)
     {
         gTasks[taskId].tFrameCounter++;
-        //Play Azurill cry at frame 32
+        //Play Mewtwo cry at frame 32
         if (gTasks[taskId].tFrameCounter == 32)
-            PlayCry1(SPECIES_AZURILL, 0);
+            PlayCry1(SPECIES_MEWTWO, 0);
     }
 }
 
@@ -896,7 +902,7 @@ static void Task_NewGameSpeech10(u8 taskId)
     if (BirchSpeechUpdateWindowText())
     {
         gSprites[gTasks[taskId].tBirchSpriteId].oam.objMode = ST_OAM_OBJ_BLEND;
-        gSprites[gTasks[taskId].tAzurillSpriteId].oam.objMode = ST_OAM_OBJ_BLEND;
+        gSprites[gTasks[taskId].tMewtwoSpriteId].oam.objMode = ST_OAM_OBJ_BLEND;
         StartSpriteFadeOut(taskId, 2);
         StartBackgroundFadeOut(taskId, 1);
         gTasks[taskId].tFrameCounter = 64;
@@ -923,9 +929,9 @@ static void Task_NewGameSpeech12(u8 taskId)
 {
     if (gTasks[taskId].tSubtaskIsDone)
     {
-        //Hide Birch and Azurill
+        //Hide Birch and Mewtwo
         gSprites[gTasks[taskId].tBirchSpriteId].invisible = TRUE;
-        gSprites[gTasks[taskId].tAzurillSpriteId].invisible = TRUE;
+        gSprites[gTasks[taskId].tMewtwoSpriteId].invisible = TRUE;
 
         if (gTasks[taskId].tFrameCounter)
         {
@@ -945,6 +951,13 @@ static void Task_NewGameSpeech12(u8 taskId)
             StartSpriteFadeIn(taskId, 2);
             StartBackgroundFadeIn(taskId, 1);
             gTasks[taskId].func = Task_NewGameSpeech13;
+			
+			spriteId = gTasks[taskId].tMewtwoSpriteId = LoadMewSprite(gTasks[taskId].tMewtwoSpriteId, MEW_X, MEW_Y);
+			gSprites[spriteId].invisible = TRUE;
+			gSprites[spriteId].oam.priority = 0;
+			gSprites[spriteId].oam.objMode = ST_OAM_OBJ_NORMAL;
+			gSprites[spriteId].callback = nullsub_34;
+			
         }
     }
 }
@@ -1181,15 +1194,16 @@ static void Task_NewGameSpeech27(u8 taskId)
         spriteId = gTasks[taskId].tMaySpriteId;
         gSprites[spriteId].invisible = TRUE;
 
-        //Fade in Birch and Azurill
+        //Fade in Birch and Mew
         spriteId = (u8)gTasks[taskId].tBirchSpriteId;
         gSprites[spriteId].pos1.x = 136;
         gSprites[spriteId].pos1.y = 64;
         gSprites[spriteId].invisible = FALSE;
         gSprites[spriteId].oam.objMode = ST_OAM_OBJ_BLEND;
-        spriteId = (u8)gTasks[taskId].tAzurillSpriteId;
-        gSprites[spriteId].pos1.x = 104;
-        gSprites[spriteId].pos1.y = 72;
+		
+        spriteId = (u8)gTasks[taskId].tMewtwoSpriteId;
+        gSprites[spriteId].pos1.x = MEW_X;
+        gSprites[spriteId].pos1.y = MEW_Y;
         gSprites[spriteId].invisible = FALSE;
         gSprites[spriteId].oam.objMode = ST_OAM_OBJ_BLEND;
 
@@ -1213,15 +1227,15 @@ static void Task_NewGameSpeech28(u8 taskId)
         spriteId = gTasks[taskId].tBirchSpriteId;
         gSprites[spriteId].oam.objMode = ST_OAM_OBJ_NORMAL;
 
-        spriteId = gTasks[taskId].tAzurillSpriteId;
+        spriteId = gTasks[taskId].tMewtwoSpriteId;
         gSprites[spriteId].oam.objMode = ST_OAM_OBJ_NORMAL;
 
         if (BirchSpeechUpdateWindowText())
         {
-            //Fade out Birch and Azurill
+            //Fade out Birch and Mew
             spriteId = gTasks[taskId].tBirchSpriteId;
             gSprites[spriteId].oam.objMode = ST_OAM_OBJ_BLEND;
-            spriteId = gTasks[taskId].tAzurillSpriteId;
+            spriteId = gTasks[taskId].tMewtwoSpriteId;
             gSprites[spriteId].oam.objMode = ST_OAM_OBJ_BLEND;
 
             StartSpriteFadeOut(taskId, 2);
@@ -1238,10 +1252,10 @@ static void Task_NewGameSpeech29(u8 taskId)
     {
         s16 spriteId;
 
-        //Hide Birch and Azurill
+        //Hide Birch and Mew
         spriteId = gTasks[taskId].tBirchSpriteId;
         gSprites[spriteId].invisible = TRUE;
-        spriteId = gTasks[taskId].tAzurillSpriteId;
+        spriteId = gTasks[taskId].tMewtwoSpriteId;
         gSprites[spriteId].invisible = TRUE;
 
         if (gTasks[taskId].tFrameCounter)
@@ -1426,17 +1440,33 @@ void ShrinkPlayerSprite(struct Sprite *sprite)
     sprite->data[0] = y;
 }
 
-u8 CreateAzurillSprite(u8 x, u8 y)
+u8 CreateMewtwoSprite(u8 x, u8 y)
 {
     DecompressPicFromTable_2(
-        &gMonFrontPicTable[SPECIES_AZURILL],
-        gMonFrontPicCoords[SPECIES_AZURILL].coords,
-        gMonFrontPicCoords[SPECIES_AZURILL].y_offset,
+        &gMonFrontPicTable[SPECIES_MEWTWO],
+        gMonFrontPicCoords[SPECIES_MEWTWO].coords,
+        gMonFrontPicCoords[SPECIES_MEWTWO].y_offset,
         gUnknown_081FAF4C[0],
         gUnknown_081FAF4C[1],
-        SPECIES_AZURILL);
-    LoadCompressedObjectPalette(&gMonPaletteTable[SPECIES_AZURILL]);
-    GetMonSpriteTemplate_803C56C(SPECIES_AZURILL, 1);
+        SPECIES_MEWTWO);
+    LoadCompressedObjectPalette(&gMonPaletteTable[SPECIES_MEWTWO]);
+    GetMonSpriteTemplate_803C56C(SPECIES_MEWTWO, 1);
+    return CreateSprite(&gUnknown_02024E8C, x, y, 0);
+}
+
+u8 LoadMewSprite(u8 sMewtwo, u8 x, u8 y)
+{
+	DestroySprite(&gSprites[sMewtwo]);
+	
+    DecompressPicFromTable_2(
+        &gMonFrontPicTable[SPECIES_MEW],
+        gMonFrontPicCoords[SPECIES_MEW].coords,
+        gMonFrontPicCoords[SPECIES_MEW].y_offset,
+        gUnknown_081FAF4C[0],
+        gUnknown_081FAF4C[1],
+        SPECIES_MEW);
+    LoadCompressedObjectPalette(&gMonPaletteTable[SPECIES_MEW]);
+    GetMonSpriteTemplate_803C56C(SPECIES_MEW, 1);
     return CreateSprite(&gUnknown_02024E8C, x, y, 0);
 }
 
@@ -1450,11 +1480,11 @@ void AddBirchSpeechObjects(u8 taskId)
     gSprites[spriteId].invisible = 1;
     gTasks[taskId].tBirchSpriteId = spriteId;
 
-    spriteId = CreateAzurillSprite(0x68, 0x48);
+    spriteId = CreateMewtwoSprite(MEWTWO_X, MEWTWO_Y);
     gSprites[spriteId].callback = nullsub_34;
     gSprites[spriteId].oam.priority = 0;
     gSprites[spriteId].invisible = 1;
-    gTasks[taskId].tAzurillSpriteId = spriteId;
+    gTasks[taskId].tMewtwoSpriteId = spriteId;
 
     //Create Brendan sprite
     spriteId = CreateTrainerSprite(0, 120, 60, 0, eBrendanSprite);
@@ -1477,7 +1507,7 @@ void AddBirchSpeechObjects(u8 taskId)
 #undef tGenderSelection
 #undef tFrameCounter
 #undef tBirchSpriteId
-#undef tAzurillSpriteId
+#undef tMewtwoSpriteId
 #undef tBrendanSpriteId
 #undef tMaySpriteId
 
