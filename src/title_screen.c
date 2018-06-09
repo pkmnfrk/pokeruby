@@ -15,6 +15,7 @@
 #include "sprite.h"
 #include "task.h"
 #include "scanline_effect.h"
+#include "constants/songs.h"
 
 #if ENGLISH
 #define VERSION_BANNER_SHAPE 1
@@ -334,7 +335,7 @@ static const struct CompressedSpriteSheet sPokemonLogoShineSpriteSheet[] =
 #define LEGENDARY_MARKING_COLOR(c) RGB((c), 0, 0)
 #else
 //Blue Groundon markings
-#define LEGENDARY_MARKING_COLOR(c) RGB(0, 0, (c))
+#define LEGENDARY_MARKING_COLOR(c) RGB(0, (c), 0)
 #endif
 
 #if defined(GERMAN) && defined(SAPPHIRE)
@@ -612,6 +613,8 @@ static void VBlankCB(void)
 
 #define tCounter data[0]
 #define tSkipToNext data[1]
+#define tTitleWait data[6]
+#define tTitleMusic data[7]
 
 void CB2_InitTitleScreen(void)
 {
@@ -707,7 +710,8 @@ void CB2_InitTitleScreen(void)
                     | DISPCNT_OBJ_ON
                     | DISPCNT_WIN0_ON
                     | DISPCNT_OBJWIN_ON;
-        m4aSongNumStart(0x19D);
+		m4aSongNumStart(BGM_STOP);
+        m4aSongNumStart(BGM_ME_TAMA);
         gMain.state = 5;
         break;
     }
@@ -799,6 +803,9 @@ static void Task_TitleScreenPhase2(u8 taskId)
         CreatePressStartBanner(START_BANNER_X, 108);
         CreateCopyrightBanner(DISPLAY_WIDTH / 2, 148);
         gTasks[taskId].data[4] = 0;
+		gTasks[taskId].tTitleWait = 0;
+		gTasks[taskId].tTitleMusic = 0;
+
         gTasks[taskId].func = Task_TitleScreenPhase3;
     }
 
@@ -851,11 +858,21 @@ static void Task_TitleScreenPhase3(u8 taskId)
                 gBattle_BG1_X = 0;
             }
             UpdateLegendaryMarkingColor(gTasks[taskId].tCounter);
-            if ((gMPlay_BGM.status & 0xFFFF) == 0)
+            if (gTasks[taskId].tTitleMusic == 0 && gTasks[taskId].tCounter == 240)
             {
-                BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 16, FADE_COLOR_WHITE);
-                SetMainCallback2(CB2_GoToCopyrightScreen);
+				m4aSongNumStart(BGM_HIDERI);
+				gTasks[taskId].tTitleMusic = 1;
             }
+
+			if ((gTasks[taskId].tCounter % 16) == 0) {
+				gTasks[taskId].tTitleWait++;
+				if (gTasks[taskId].tTitleWait == 150) {
+					FadeOutBGM(4);
+					BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 16, FADE_COLOR_WHITE);
+					SetMainCallback2(CB2_GoToCopyrightScreen);
+				}
+			}
+
         }
     }
 }

@@ -1389,4 +1389,94 @@ static const u8 gItemDescription_HM08[] = _(
     "the 1st turn, then\n"
     "attacks next turn.");
 
+static const u8 gItemDescription_Egg_Plain[] = _(
+	"A plain-looking\n"
+	"egg. What could\n"
+	"it contain?");
+
+static const u8 gItemDescription_Egg_Blazing[] = _(
+	"A hot-to-the-touch\n"
+	"egg. What could\n"
+	"it contain?");
+
+static const u8 gItemDescription_Egg_Punchy[] = _(
+	"A rugged, forceful\n"
+	"egg. What could\n"
+	"it contain?");
+
+static const u8 gItemDescription_Egg_Moist[] = _(
+	"A dripping-wet\n"
+	"egg. What could\n"
+	"it contain?");
+
+static const u8 gItemDescription_Egg_Lofty[] = _(
+	"A light, airy\n"
+	"egg. What could\n"
+	"it contain?");
+
+static const u8 gItemDescription_Egg_Leafy[] = _(
+	"A grass-covered\n"
+	"egg. What could\n"
+	"it contain?");
+
+static const u8 gItemDescription_Egg_Sickly[] = _(
+	"A nasty, gross\n"
+	"egg. What could\n"
+	"it contain?");
+
+static const u8 gItemDescription_Egg_Charged[] = _(
+	"A shock-inducing\n"
+	"egg. What could\n"
+	"it contain?");
+
+static const u8 gItemDescription_Egg_Dirty[] = _(
+	"An earthy, musty\n"
+	"egg. What could\n"
+	"it contain?");
+
+static const u8 gItemDescription_Egg_Psionic[] = _(
+	"An egg that probes\n"
+	"your mind. What\n"
+	"could it contain?");
+
+static const u8 gItemDescription_Egg_Sturdy[] = _(
+	"A rocky and tough\n"
+	"egg. What could\n"
+	"it contain?");
+
+static const u8 gItemDescription_Egg_Chilly[] = _(
+	"An egg that is cool\n"
+	"to the touch. What\n"
+	"could it contain?");
+
+static const u8 gItemDescription_Egg_Wriggly[] = _(
+	"A squirmy, squishy\n"
+	"egg. What could\n"
+	"it contain?");
+
+static const u8 gItemDescription_Egg_Noble[] = _(
+	"A graceful\n"
+	"egg. What could\n"
+	"it contain?");
+
+static const u8 gItemDescription_Egg_Spooky[] = _(
+	"A chill-inducing\n"
+	"egg. What could\n"
+	"it contain?");
+
+static const u8 gItemDescription_Egg_Shady[] = _(
+	"A darkly-shaded\n"
+	"egg. What could\n"
+	"it contain?");
+
+static const u8 gItemDescription_Egg_Metallic[] = _(
+	"A metal-plated\n"
+	"egg. What could\n"
+	"it contain?");
+
+static const u8 gItemDescription_Egg_Rainbow[] = _(
+	"A multi-faceted\n"
+	"egg. What could\n"
+	"it contain?");
+
 static const u8 gItemDescription_Dummy[] = _("");

@@ -115,7 +115,7 @@ static void nullsub_34(struct Sprite *sprite);
 static void ShrinkPlayerSprite(struct Sprite *sprite);
 static u8 CreateMewtwoSprite(u8 x, u8 y);
 static u8 LoadMewSprite(u8 sMewtwo, u8 x, u8 y);
-static void AddBirchSpeechObjects(u8 taskId);
+static void AddBirchSpeechObjects(u8 taskId, u8 secondHalf);
 static void Task_SpriteFadeOut(u8 taskId);
 static void StartSpriteFadeOut(u8 taskId, u8 interval);
 static void Task_SpriteFadeIn(u8 taskId);
@@ -770,7 +770,7 @@ static void Task_NewGameSpeech1(u8 taskId)
     ScanlineEffect_Stop();
     ResetSpriteData();
     FreeAllSpritePalettes();
-    AddBirchSpeechObjects(taskId);
+    AddBirchSpeechObjects(taskId, FALSE);
     BeginNormalPaletteFade(0xFFFFFFFF, 0, 16, 0, RGB(0, 0, 0));
     REG_BG1CNT = BGCNT_PRIORITY(3) | BGCNT_CHARBASE(0) | BGCNT_SCREENBASE(7) | BGCNT_16COLOR | BGCNT_TXT256x256;
     REG_DISPCNT = DISPCNT_MODE_0 | DISPCNT_BG0_ON | DISPCNT_BG1_ON | DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP;
@@ -778,9 +778,9 @@ static void Task_NewGameSpeech1(u8 taskId)
     gTasks[taskId].func = Task_NewGameSpeech2;
     gTasks[taskId].tTrainerSpriteId = 0xFF;
     gTasks[taskId].data[3] = 0xFF;
-    gTasks[taskId].tFrameCounter = 216;  //Wait 3.6 seconds (216 frames) before starting speech
+    gTasks[taskId].tFrameCounter = 216 / 2;  //Wait 3.6 seconds (216 frames) before starting speech
 
-    PlayBGM(MUS_DOORO_X4);
+    PlayBGM(MUS_CASINO);
 }
 
 static void Task_NewGameSpeech2(u8 taskId)
@@ -1383,7 +1383,7 @@ void CB_ContinueNewGameSpeechPart2()
     ScanlineEffect_Stop();
     ResetSpriteData();
     FreeAllSpritePalettes();
-    AddBirchSpeechObjects(taskId);
+    AddBirchSpeechObjects(taskId, TRUE);
 
     Text_LoadWindowTemplate(&gWindowTemplate_81E6C3C);
     InitMenuWindow((struct WindowTemplate *)&gMenuTextWindowTemplate);
@@ -1470,7 +1470,7 @@ u8 LoadMewSprite(u8 sMewtwo, u8 x, u8 y)
     return CreateSprite(&gUnknown_02024E8C, x, y, 0);
 }
 
-void AddBirchSpeechObjects(u8 taskId)
+void AddBirchSpeechObjects(u8 taskId, u8 secondHalf)
 {
     u8 spriteId;
 
@@ -1481,6 +1481,9 @@ void AddBirchSpeechObjects(u8 taskId)
     gTasks[taskId].tBirchSpriteId = spriteId;
 
     spriteId = CreateMewtwoSprite(MEWTWO_X, MEWTWO_Y);
+	if (secondHalf) {
+		spriteId = LoadMewSprite(spriteId, MEW_X, MEW_Y);
+	}
     gSprites[spriteId].callback = nullsub_34;
     gSprites[spriteId].oam.priority = 0;
     gSprites[spriteId].invisible = 1;

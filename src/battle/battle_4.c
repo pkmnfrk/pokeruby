@@ -5374,6 +5374,8 @@ static void atk23_getexp(void)
     s32 viaExpShare = 0;
     u16* exp = &gBattleStruct->exp;
 
+	u8 eggRand;
+
     gBank1 = GetBattleBank(gBattlescriptCurrInstr[1]);
     sentIn = gSentPokesToOpponent[(gBank1 & 2) >> 1];
 
@@ -5614,7 +5616,7 @@ static void atk23_getexp(void)
             if (gBattleStruct->expGetterID <= 5)
                 gBattleStruct->getexpStateTracker = 2; // loop again
             else
-                gBattleStruct->getexpStateTracker = 6; // we're done
+                gBattleStruct->getexpStateTracker = 7; // we're done
         }
         break;
     case 6: // increment instruction
@@ -5626,6 +5628,49 @@ static void atk23_getexp(void)
             gBattlescriptCurrInstr += 2;
         }
         break;
+	case 7: // figure out dropped egg
+		//gBattleMons[gBank1].species
+		//first, decide what kind of egg they get
+		eggRand = Random() % 32;
+		if (eggRand >= 16)
+		{
+			if (eggRand >= 24)
+			{
+				if (eggRand >= 28)
+				{
+					if (eggRand >= 30)
+					{
+						if (eggRand >= 31)
+						{
+							eggRand = 5;
+						}
+						else
+						{
+							eggRand = 4;
+						}
+					}
+					else
+					{
+						eggRand = 3;
+					}
+				}
+				else
+				{
+					eggRand = 2;
+				}
+			}
+			else
+			{
+				eggRand = 1;
+			}
+		} 
+		else
+		{
+			eggRand = 0;
+		}
+
+		gBattleStruct->getexpStateTracker = 7; // we're done
+		break;
     }
 }
 
