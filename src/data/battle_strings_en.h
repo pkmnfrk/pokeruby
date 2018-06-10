@@ -841,6 +841,8 @@ const u8 BattleText_Ice[] = _("an ICE move");
 const u8 BattleText_Dragon[] = _("a DRAGON move");
 const u8 BattleText_Dark[] = _("a DARK move");
 
+const u8 BattleText_DroppedEgg[] = _("{STRING 13} dropped a\n{STRING 0} egg!\p");
+
 const u8 *const gUnknown_08400F58[] =
 {
     BattleStatText_HP,
@@ -1215,6 +1217,7 @@ const u8 *const gBattleStringsTable[] =
     BattleText_Obtained3,
     BattleText_NoEffect,
     BattleText_NoEffectOn,
+	BattleText_DroppedEgg,
 };
 
 // below are lists of battle string enums and NOT pointers to the strings.

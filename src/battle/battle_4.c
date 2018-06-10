@@ -387,6 +387,7 @@ static void atk1F_jumpifsideaffecting(void);
 static void atk20_jumpifstat(void);
 static void atk21_jumpifstatus3condition(void);
 static void atk22_jumpiftype(void);
+static void atk23_grant_phat_lewt(void);
 static void atk23_getexp(void);
 static void atk24(void);
 static void atk25_movevaluescleanup(void);
@@ -5364,6 +5365,44 @@ static void atk22_jumpiftype(void) //u8 bank, u8 type, *ptr
         gBattlescriptCurrInstr += 7;
 }
 
+static void atk23_grant_phat_lewt(void)
+{
+	u16 item;
+
+	//first, decide what kind of egg they get
+
+	item = Random() % 16 + 16;
+
+	if (item <= 16)
+		item = 0;
+	else if (item <= 24)
+		item = 1;
+	else if (item <= 28)
+		item = 2;
+	else if (item <= 30)
+		item = 3;
+	else if (item <= 31)
+		item = 4;
+
+	if (item) {
+		item = ITEM_EGG_START + ((Random() % 2) ? gBattleMons[gBank1].type2 : gBattleMons[gBank1].type1) * 4 + (item - 1);
+
+		if (CheckBagHasSpace(item, 1)) {
+			//BattleScriptPushCursor();
+
+			//PREPARE_MON_NICK_WITH_PREFIX_BUFFER(gBattleTextBuff1, gBank1, gBattlerPartyIndexes[gBank1]);
+			PREPARE_ITEM_BUFFER(gBattleTextBuff1, item);
+
+			PrepareStringBattle(STRINGID_DROPPEDEGG, 0);
+
+			AddBagItem(item, 1);
+		}
+		else {
+			//No room for item
+		}
+	}
+}
+
 static void atk23_getexp(void)
 {
     u16 item;
@@ -5373,8 +5412,6 @@ static void atk23_getexp(void)
 
     s32 viaExpShare = 0;
     u16* exp = &gBattleStruct->exp;
-
-	u8 eggRand;
 
     gBank1 = GetBattleBank(gBattlescriptCurrInstr[1]);
     sentIn = gSentPokesToOpponent[(gBank1 & 2) >> 1];
@@ -5493,11 +5530,11 @@ static void atk23_getexp(void)
                     if (IsTradedMon(&gPlayerParty[gBattleStruct->expGetterID]))
                     {
                         gBattleMoveDamage = (gBattleMoveDamage * 150) / 100;
-                        i = 0x14A;
+                        i = STRINGID_ABOOSTED;
                     }
                     else
                     {
-                        i = 0x149;
+                        i = STRINGID_EMPTYSTRING4;
                     }
 
                     // get exp getter bank
@@ -5516,13 +5553,16 @@ static void atk23_getexp(void)
                     else
                         gBattleStruct->expGetterBank = 0;
 
+					// '{pokemon}'
                     PREPARE_MON_NICK_WITH_PREFIX_BUFFER(gBattleTextBuff1, gBattleStruct->expGetterBank, gBattleStruct->expGetterID)
 
-					// buffer 'gained' or 'gained a boosted'
+					// '' or ' a boosted'
 					PREPARE_STRING_BUFFER(gBattleTextBuff2, i)
 
+					// '{exp}'
                     PREPARE_WORD_NUMBER_BUFFER(gBattleTextBuff3, 5, gBattleMoveDamage)
 
+					// {buffer1} gained{buffer2} {buffer3} EXP. points!
                     PrepareStringBattle(STRINGID_PKMNGAINEDEXP, gBattleStruct->expGetterBank);
                     MonGainEVs(&gPlayerParty[gBattleStruct->expGetterID], gBattleMons[gBank1].species);
                 }
@@ -5629,47 +5669,9 @@ static void atk23_getexp(void)
         }
         break;
 	case 7: // figure out dropped egg
-		//gBattleMons[gBank1].species
-		//first, decide what kind of egg they get
-		eggRand = Random() % 32;
-		if (eggRand >= 16)
-		{
-			if (eggRand >= 24)
-			{
-				if (eggRand >= 28)
-				{
-					if (eggRand >= 30)
-					{
-						if (eggRand >= 31)
-						{
-							eggRand = 5;
-						}
-						else
-						{
-							eggRand = 4;
-						}
-					}
-					else
-					{
-						eggRand = 3;
-					}
-				}
-				else
-				{
-					eggRand = 2;
-				}
-			}
-			else
-			{
-				eggRand = 1;
-			}
-		} 
-		else
-		{
-			eggRand = 0;
-		}
+		atk23_grant_phat_lewt();
 
-		gBattleStruct->getexpStateTracker = 7; // we're done
+		gBattleStruct->getexpStateTracker = 6; // we're done
 		break;
     }
 }

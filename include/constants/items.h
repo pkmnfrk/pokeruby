@@ -1,7 +1,29 @@
 #ifndef GUARD_CONSTANTS_ITEMS_H
 #define GUARD_CONSTANTS_ITEMS_H
 
-#include "pokemon.h"
+//#include "pokemon.h"
+
+#ifndef TYPE_NORMAL
+#define TYPE_MANUALLY_DEFINED
+#define TYPE_NORMAL   0x00
+#define TYPE_FIGHTING 0x01
+#define TYPE_FLYING   0x02
+#define TYPE_POISON   0x03
+#define TYPE_GROUND   0x04
+#define TYPE_ROCK     0x05
+#define TYPE_BUG      0x06
+#define TYPE_GHOST    0x07
+#define TYPE_STEEL    0x08
+#define TYPE_MYSTERY  0x09
+#define TYPE_FIRE     0x0a
+#define TYPE_WATER    0x0b
+#define TYPE_GRASS    0x0c
+#define TYPE_ELECTRIC 0x0d
+#define TYPE_PSYCHIC  0x0e
+#define TYPE_ICE      0x0f
+#define TYPE_DRAGON   0x10
+#define TYPE_DARK     0x11
+#endif
 
 #define ITEM_NONE 0
 
@@ -449,5 +471,26 @@
 #define IS_ITEM_MAIL(item) ((item) >= ITEM_ORANGE_MAIL && (item) <= ITEM_RETRO_MAIL)
 
 #define IS_LOOT_EGG(item) ((item) >= ITEM_EGG_START && (item) <= ITEM_EGG_SHADY_MASTER)
+
+#ifdef TYPE_MANUALLY_DEFINED
+#undef TYPE_NORMAL   
+#undef TYPE_FIGHTING 
+#undef TYPE_FLYING   
+#undef TYPE_POISON   
+#undef TYPE_GROUND   
+#undef TYPE_ROCK     
+#undef TYPE_BUG      
+#undef TYPE_GHOST    
+#undef TYPE_STEEL    
+#undef TYPE_MYSTERY  
+#undef TYPE_FIRE     
+#undef TYPE_WATER    
+#undef TYPE_GRASS    
+#undef TYPE_ELECTRIC 
+#undef TYPE_PSYCHIC  
+#undef TYPE_ICE      
+#undef TYPE_DRAGON   
+#undef TYPE_DARK     
+#endif
 
 #endif  // GUARD_CONSTANTS_ITEMS_H

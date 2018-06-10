@@ -16,7 +16,7 @@
 #include "ewram.h"
 
 #define BATTLESTRING_TO_SUB 12
-#define BATTLESTRINGS_NO    351
+#define BATTLESTRINGS_NO    (sizeof(gBattleStringsTable) / sizeof(gBattleStringsTable[0]))
 #define BATTLESTRINGS_MAX   BATTLESTRINGS_NO + BATTLESTRING_TO_SUB
 
 #ifdef GERMAN

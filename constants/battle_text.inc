@@ -350,3 +350,22 @@
 	enum BATTLE_TEXT_Obtained3
 	enum BATTLE_TEXT_NoEffect
 	enum BATTLE_TEXT_NoEffectOn
+	enum BATTLE_TEXT_filler_1
+	enum BATTLE_TEXT_filler_2
+	enum BATTLE_TEXT_filler_3
+	enum BATTLE_TEXT_filler_4
+	enum BATTLE_TEXT_filler_5
+	enum BATTLE_TEXT_filler_6
+	enum BATTLE_TEXT_filler_7
+	enum BATTLE_TEXT_filler_8
+	enum BATTLE_TEXT_filler_9
+	enum BATTLE_TEXT_filler_10
+	enum BATTLE_TEXT_filler_11
+	enum BATTLE_TEXT_filler_12
+	enum BATTLE_TEXT_filler_13
+	enum BATTLE_TEXT_filler_14
+	enum BATTLE_TEXT_filler_15
+	enum BATTLE_TEXT_filler_16
+	enum BATTLE_TEXT_filler_17
+	enum BATTLE_TEXT_filler_18
+	enum BATTLE_TEXT_EggDropped

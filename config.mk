@@ -2,9 +2,9 @@
 
 # Default variables
 GAME_VERSION  ?= RUBY
-GAME_REVISION ?= 0
+GAME_REVISION ?= 2
 GAME_LANGUAGE ?= ENGLISH
-DEBUG         ?= 0
+DEBUG         ?= 1
 COMPARE  ?= 0
 
 # For gbafix
