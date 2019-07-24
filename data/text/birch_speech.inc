@@ -57,15 +57,8 @@ gBirchSpeech_AreYouReady:: @ 81C7074
 	.string "Your very own gacha-style\n"
 	.string "adventure is about to unfold.\p"
 	.string "Take courage, and leap into the\n"
-<<<<<<< HEAD
-	.string "world of POKéMON where dreams,\l"
-	.string "adventure, and friendships await!\p"
-	.string "Well, I'll be expecting you later.\n"
-	.string "Come see me in my POKéMON LAB.\p$"
-=======
 	.string "world of POKéMON where eggs,\l"
 	.string "adventure, and nonsense await!\p"
 	.string "I guess I'll be expecting you\n"
 	.string "later. Come see me in my POKéMON\l"
 	.string "LAB when you're all set up!\p$"
->>>>>>> initial modifications for Egg Version

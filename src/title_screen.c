@@ -710,8 +710,8 @@ void CB2_InitTitleScreen(void)
                     | DISPCNT_OBJ_ON
                     | DISPCNT_WIN0_ON
                     | DISPCNT_OBJWIN_ON;
-		m4aSongNumStart(BGM_STOP);
-        m4aSongNumStart(BGM_ME_TAMA);
+		m4aSongNumStart(MUS_STOP);
+        m4aSongNumStart(MUS_ME_TAMA);
         gMain.state = 5;
         break;
     }
@@ -860,7 +860,7 @@ static void Task_TitleScreenPhase3(u8 taskId)
             UpdateLegendaryMarkingColor(gTasks[taskId].tCounter);
             if (gTasks[taskId].tTitleMusic == 0 && gTasks[taskId].tCounter == 240)
             {
-				m4aSongNumStart(BGM_HIDERI);
+				m4aSongNumStart(MUS_HIDERI);
 				gTasks[taskId].tTitleMusic = 1;
             }
 
