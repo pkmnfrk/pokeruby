@@ -841,7 +841,7 @@ const u8 BattleText_Ice[] = _("an ICE move");
 const u8 BattleText_Dragon[] = _("a DRAGON move");
 const u8 BattleText_Dark[] = _("a DARK move");
 
-const u8 BattleText_DroppedEgg[] = _("{STRING 13} dropped a\n{STRING 0} egg!\p");
+const u8 BattleText_DroppedEgg[] = _("{STRING 13} dropped a {STRING 0}\negg! ({STRING 1})\p");
 
 const u8 *const gUnknown_08400F58[] =
 {

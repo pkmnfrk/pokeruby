@@ -5392,6 +5392,8 @@ static void atk23_grant_phat_lewt(void)
 
 			//PREPARE_MON_NICK_WITH_PREFIX_BUFFER(gBattleTextBuff1, gBank1, gBattlerPartyIndexes[gBank1]);
 			PREPARE_ITEM_BUFFER(gBattleTextBuff1, item);
+			PREPARE_BYTE_NUMBER_BUFFER(gBattleTextBuff2, 2, (u8)gBattleMoveDamage);
+			
 
 			PrepareStringBattle(STRINGID_DROPPEDEGG, 0);
 
@@ -5668,10 +5670,25 @@ static void atk23_getexp(void)
             gBattlescriptCurrInstr += 2;
         }
         break;
-	case 7: // figure out dropped egg
-		atk23_grant_phat_lewt();
+	case 7: // clear a variable
 
-		gBattleStruct->getexpStateTracker = 6; // we're done
+		gBattleMoveDamage = 16;
+		gBattleStruct->getexpStateTracker++;
+
+		// fall through
+	case 8: // figure out dropped egg
+		if (gBattleExecBuffer == 0) {
+
+			atk23_grant_phat_lewt();
+
+			gBattleMoveDamage--;
+
+			if (!gBattleMoveDamage) {
+				gBattleStruct->getexpStateTracker = 6; // we're done
+			}
+		}
+
+		
 		break;
     }
 }
