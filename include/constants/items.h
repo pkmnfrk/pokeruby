@@ -1,8 +1,6 @@
 #ifndef GUARD_CONSTANTS_ITEMS_H
 #define GUARD_CONSTANTS_ITEMS_H
 
-#include "pokemon.h"
-
 #define ITEM_NONE 0
 
 // Balls
