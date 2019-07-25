@@ -711,7 +711,7 @@ void CB2_InitTitleScreen(void)
                     | DISPCNT_WIN0_ON
                     | DISPCNT_OBJWIN_ON;
 		m4aSongNumStart(MUS_STOP);
-        m4aSongNumStart(MUS_ME_TAMA);
+        m4aSongNumStart(MUS_BD_TIME);
         gMain.state = 5;
         break;
     }
@@ -825,7 +825,9 @@ static void Task_TitleScreenPhase3(u8 taskId)
 
     if ((gMain.newKeys & A_BUTTON) || (gMain.newKeys & START_BUTTON))
     {
-        FadeOutBGM(4);
+        //FadeOutBGM(4);
+        m4aSongNumStart(MUS_STOP);
+        m4aSongNumStart(MUS_ME_B_SMALL);
         BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 16, FADE_COLOR_WHITE);
         SetMainCallback2(CB2_GoToMainMenu);
     }
@@ -858,11 +860,6 @@ static void Task_TitleScreenPhase3(u8 taskId)
                 gBattle_BG1_X = 0;
             }
             UpdateLegendaryMarkingColor(gTasks[taskId].tCounter);
-            if (gTasks[taskId].tTitleMusic == 0 && gTasks[taskId].tCounter == 240)
-            {
-				m4aSongNumStart(MUS_HIDERI);
-				gTasks[taskId].tTitleMusic = 1;
-            }
 
 			if ((gTasks[taskId].tCounter % 16) == 0) {
 				gTasks[taskId].tTitleWait++;
