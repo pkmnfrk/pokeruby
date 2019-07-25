@@ -35,3 +35,11 @@ OldaleTown_PokemonCenter_1F_EventScript_152F4C:: @ 8152F4C
 	msgbox OldaleTown_PokemonCenter_1F_Text_174A2E, 4
 	release
 	end
+
+OldaleTown_PokemonCenter_1F_EventScript_EggGuy::
+	@setvar VAR_SPECIAL_B, 1
+	call global_EventScript_EggGuy
+	waitmessage
+	waitbuttonpress
+	release
+	end

@@ -123,6 +123,25 @@ bool8 CheckBagHasItem(u16 itemId, u16 count)
     return FALSE;
 }
 
+bool8 CheckBagHasEggItem()
+{
+    u8 i;
+    u8 pocket;
+
+    pocket = POCKET_EGGS - 1;
+    //Check for item slots that contain the item
+    for (i = 0; i < gBagPockets[pocket].capacity; i++)
+    {
+        if (IS_LOOT_EGG(gBagPockets[pocket].itemSlots[i].itemId))
+        {
+            //Does this item slot contain enough of the item?
+            if (gBagPockets[pocket].itemSlots[i].quantity > 0)
+                return TRUE;
+        }
+    }
+    return FALSE;
+}
+
 bool8 CheckBagHasSpace(u16 itemId, u16 count)
 {
     u8 i;

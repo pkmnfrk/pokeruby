@@ -396,7 +396,8 @@ gStdScripts_End::
 	.include "data/maps/SecretBase_YellowCave2/scripts.inc"
 	.include "data/maps/SecretBase_YellowCave3/scripts.inc"
 	.include "data/maps/SecretBase_YellowCave4/scripts.inc"
-
+	.include "data/eggs.inc"
+	
 gUnknown_0815F36C:: @ 815F36C
 	lockall
 	playse SE_PC_LOGON

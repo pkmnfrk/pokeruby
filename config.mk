@@ -12,7 +12,7 @@ MAKER_CODE  := 01
 
 # Version
 ifeq ($(GAME_VERSION), RUBY)
-  BUILD_NAME := ruby
+  BUILD_NAME := egg
   TITLE      := POKEMON RUBY
   GAME_CODE  := AXV
 else
@@ -33,7 +33,7 @@ ifeq ($(GAME_REVISION), 1)
   BUILD_NAME := $(BUILD_NAME)_rev1
 else
 ifeq ($(GAME_REVISION), 2)
-  BUILD_NAME := $(BUILD_NAME)_rev2
+  BUILD_NAME := $(BUILD_NAME)
 else
   $(error unknown revision $(GAME_REVISION))
 endif

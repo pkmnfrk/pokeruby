@@ -1,0 +1,19 @@
+{
+    "files.associations": {
+        "global.h": "c",
+        "pokemon.h": "c",
+        "item_menu.h": "c",
+        "items.h": "c",
+        "item.h": "c",
+        "strings.h": "c",
+        "main.h": "c",
+        "menu.h": "c",
+        "script.h": "c",
+        "gba.h": "c",
+        "defines.h": "c",
+        "syscall.h": "c",
+        "isagbprint.h": "c",
+        "event_data.h": "c",
+        "string_util.h": "c"
+    }
+}

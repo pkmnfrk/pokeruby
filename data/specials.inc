@@ -353,3 +353,6 @@ gSpecials::
 .ifdef GERMAN
 	def_special nullsub_814B200
 .endif
+	def_special HasEggs
+	def_special ShowEggMenu
+	def_special EggCost
