@@ -356,3 +356,4 @@ gSpecials::
 	def_special HasEggs
 	def_special ShowEggMenu
 	def_special EggCost
+	def_special SampleRoll

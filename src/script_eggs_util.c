@@ -11,8 +11,13 @@
 #include "item_menu.h"
 #include "event_data.h"
 #include "string_util.h"
+#include "random.h"
+#include "pokemon.h"
+#include "constants/species.h"
 
 extern void (*gFieldCallback)(void);
+
+#include "egg_table.inc"
 
 void HasEggs(void)
 {
@@ -21,6 +26,11 @@ void HasEggs(void)
     if(CheckBagHasEggItem()) {
         gSpecialVar_Result = 1;
     }
+}
+
+const u16 * const getTable(u8 data)
+{
+    return eggTable_master[data];
 }
 
 void EggCost(void)
@@ -37,7 +47,52 @@ void EggCost(void)
 
     ConvertIntToDecimalString(gStringVar1, gSpecialVar_Result);
     //ConvertIntToDecimalString(gStringVar1, gSpecialVar_0x8001);
-    StringCopy10(gStringVar2, ItemId_GetName(ITEM_EGG_START + gSpecialVar_0x8001));
+    StringCopy(gStringVar2, ItemId_GetName(ITEM_EGG_START + gSpecialVar_0x8001));
+}
+
+void SampleRoll(void) 
+{
+    const u16 * table = getTable(gSpecialVar_0x8001);
+
+    u16 numItems = *table;
+    u16 curCredits = numItems;
+    u16 totalCredits = (1 + numItems) * (numItems / 2);
+
+    u16 roll = 1 + Random() % totalCredits;
+
+    u8 item = 4;
+
+    table++;
+
+    ConvertIntToDecimalString(gStringVar1, roll);
+    
+    while(roll > curCredits && numItems > 0) {
+        roll -= curCredits;
+        curCredits -= 1;
+        table++;
+        if(item) item--;
+        numItems--;
+    }
+    /*
+    if(numItems == 0) {
+        StringCopy(gStringVar2, "OVERFLOW");
+    }
+    else if(curCredits <= 0)
+    {
+        StringCopy(gStringVar2, "CREDITS");
+    }
+    else if(roll <= 0)
+    {
+        StringCopy(gStringVar2, "ROLL");
+    }
+    else */ if(item)
+    {
+        StringCopy(gStringVar2, ItemId_GetName(*table));
+    }
+    else
+    {
+        GetSpeciesName(gStringVar2, *table);
+    }
 }
 
 #define EGG_MENU_SIZE 5

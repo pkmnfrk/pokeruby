@@ -17,6 +17,8 @@ global_EventScript_EggGuy::
 	msgbox gText_EggGuy_Cost, MSGBOX_YESNO
 	compare RESULT, NO
 	goto_if_eq egg_cancel
+	special SampleRoll
+	msgbox gText_EggGuy_Sample, 4
     return
 
 egg_none::
@@ -46,3 +48,7 @@ gText_EggGuy_HasEggs::
 gText_EggGuy_Cost::
 	.string "You want to hatch this {STR_VAR_2}\n"
 	.string "egg? That will cost ¥{STR_VAR_1}.$"
+
+gText_EggGuy_Sample::
+	.string "Let's see... Rolled a {STR_VAR_1}!\n"
+	.string "That means you get a {STR_VAR_2}!$"
