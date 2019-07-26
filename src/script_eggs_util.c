@@ -28,14 +28,14 @@ void HasEggs(void)
     }
 }
 
-const u16 * const getTable(u8 data)
+const u16 * const getTable(u16 data)
 {
     return eggTable_master[data];
 }
 
 void EggCost(void)
 {
-    u8 type = gSpecialVar_0x8001 % 4;
+    u8 type = gSpecialVar_0x8007 % 4;
 
     switch(type) {
         case 0: gSpecialVar_Result = 50; break;
@@ -47,16 +47,26 @@ void EggCost(void)
 
     ConvertIntToDecimalString(gStringVar1, gSpecialVar_Result);
     //ConvertIntToDecimalString(gStringVar1, gSpecialVar_0x8001);
-    StringCopy(gStringVar2, ItemId_GetName(ITEM_EGG_START + gSpecialVar_0x8001));
+    StringCopy(gStringVar2, ItemId_GetName(ITEM_EGG_START + gSpecialVar_0x8007));
 }
 
-void SampleRoll(void) 
+bool8 getPokemonOrItem(u16 eggType, u16* pokemonId, u16* itemId)
 {
-    const u16 * table = getTable(gSpecialVar_0x8001);
+    pokemonId = NULL;
+    itemId = NULL;
 
-    u16 numItems = *table;
-    u16 curCredits = numItems;
-    u16 totalCredits = (1 + numItems) * (numItems / 2);
+    const u16 * table = eggTable_master[eggType];
+
+    if(!table)
+        return FALSE;
+
+    u16 nItems = *table;
+
+    if(!nItems)
+        return FALSE;
+
+    u16 curCredits = nItems;
+    u16 totalCredits = (1 + nItems) * (nItems / 2);
 
     u16 roll = 1 + Random() % totalCredits;
 
@@ -64,34 +74,52 @@ void SampleRoll(void)
 
     table++;
 
-    ConvertIntToDecimalString(gStringVar1, roll);
-    
-    while(roll > curCredits && numItems > 0) {
+    while(FALSE && roll > curCredits && nItems > 0) {
         roll -= curCredits;
         curCredits -= 1;
         table++;
         if(item) item--;
-        numItems--;
+        nItems--;
     }
-    /*
-    if(numItems == 0) {
-        StringCopy(gStringVar2, "OVERFLOW");
-    }
-    else if(curCredits <= 0)
+    
+    if(roll <= 0)
+        return FALSE;
+
+    if(item)
     {
-        StringCopy(gStringVar2, "CREDITS");
-    }
-    else if(roll <= 0)
-    {
-        StringCopy(gStringVar2, "ROLL");
-    }
-    else */ if(item)
-    {
-        StringCopy(gStringVar2, ItemId_GetName(*table));
+        *itemId = *table;
+        *pokemonId = 0;
     }
     else
     {
-        GetSpeciesName(gStringVar2, *table);
+        *pokemonId = *table;
+        *itemId = 0;
+    }
+
+    return TRUE;
+}
+
+void SampleRoll(void) 
+{
+    u16 pokemonId, itemId;
+
+    bool8 result = getPokemonOrItem(gSpecialVar_0x8007, &pokemonId, &itemId);
+
+    if(!result) {
+        gSpecialVar_Result = FALSE;
+    }
+
+    gSpecialVar_Result = TRUE;
+
+    if(itemId)
+    {
+        gSpecialVar_0x8000 = itemId;
+        gSpecialVar_0x8001 = 1;
+    }
+    else
+    {
+        gSpecialVar_0x8000 = pokemonId;
+        gSpecialVar_0x8001 = 2;
     }
 }
 
@@ -183,9 +211,9 @@ void taskHandleMenu(u8 taskId)
     {
         Menu_DestroyCursor();
         if(cursorPos == numItems - 1) {
-            gSpecialVar_0x8001 = 0x7f;
+            gSpecialVar_0x8007 = 0x7f;
         } else {
-            gSpecialVar_0x8001 = eggMenuType[cursorPos];
+            gSpecialVar_0x8007 = eggMenuType[cursorPos];
         }
         PlaySE(SE_SELECT);
         destroyMenu();
@@ -195,7 +223,7 @@ void taskHandleMenu(u8 taskId)
     if (gMain.newKeys & B_BUTTON)
     {
         Menu_DestroyCursor();
-        gSpecialVar_0x8001 = 0x7f;
+        gSpecialVar_0x8007 = 0x7f;
         PlaySE(SE_SELECT);
         destroyMenu();
         Menu_EraseWindowRect(0, 0, 29, 12);
